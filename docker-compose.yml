@@ -1,0 +1,27 @@
+version: "3.8"
+services:  
+    apinode:
+        container_name: apinode
+        restart: always
+        build: ./api
+        ports:
+        - "7019:7019"
+        links:
+        - redis
+        networks:
+        - redisnet
+
+    redis:
+        container_name: "redis"
+        image: redis
+        volumes: 
+        - ./data:/data
+        ports: 
+        - 6379:6379
+        restart: unless-stopped
+        networks:
+            - redisnet
+
+networks:
+  redisnet:
+    driver: "bridge"
