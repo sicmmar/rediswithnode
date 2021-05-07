@@ -1,9 +1,10 @@
 var redis = require('../libraries/Redis');
+var uuid = require('uuid');
 
 var App = {
 
     add_register: function (data, callback) {
-        var id = data.id;
+        var id = `${uuid()}`;
         var extract = {
             id: id,
             name: data.name,
