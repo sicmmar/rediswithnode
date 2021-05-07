@@ -3,7 +3,7 @@ var config = {
 
 
     redis: {
-        host: "redisnet",
+        host: "0.0.0.0",
         port: "6379",
         password: "",
         db: "4",
