@@ -1,10 +1,9 @@
 var redis = require('../libraries/Redis');
-var uuid = require('uuid');
 
 var App = {
 
     add_register: function (data, callback) {
-        var id = `${uuid()}`;
+        var id = Date.now().toString();
         var extract = {
             id: id,
             name: data.name,
@@ -35,6 +34,16 @@ var App = {
 
     },
 
+    get_all: function(callback){
+        redis.get_set({}, null, function(resp){
+            if(resp){
+                return callback({err: false, response: "Registros encontrados", data: resp}, 200);
+            }else{
+                return callback({err: true, response: "No se ha encontrado el registros", data: null}, 404);
+            }
+        })
+    },
+
     update_register: function (id, data, callback) {
         redis.add_set({key: {"id": id}, data: data}, function (resp) {
             if (resp){
@@ -54,6 +63,16 @@ var App = {
             }
         })
 
+    },
+
+    delete_all: function(callback){
+        redis.delete_set({}, function(resp){
+            if (resp){
+                return callback({err: false, response: "Registros eliminados! "}, 200);
+            }else{
+                return callback({err: true, response: "No se ha encontrado registros"}, 404);
+            }
+        })
     }
 
 };

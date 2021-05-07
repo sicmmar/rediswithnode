@@ -31,3 +31,15 @@ app.post('/nuevoRegistro', function (req, res, next) {
     })
 
 });
+
+app.get('/obtenerUsuarios', function (req, res) {
+    func.get_all(function (response, code){
+        resp(res, response, code, next)
+    })
+});
+
+app.get('/deleteAll', function (req, res){
+    func.delete_all(function (response, code){
+        resp(res, response, code, next)
+    });
+});
