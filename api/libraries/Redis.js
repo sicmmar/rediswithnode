@@ -1,4 +1,5 @@
 var Connector = require('./Connector');
+var redis_scan = require('node-redis-scan');
 
 var Redis = {
     _client: Connector.Redis(),
@@ -48,10 +49,13 @@ var Redis = {
     },
 
     get_all: function(callback){
-        this._client.hgetall('*', function(err, reply){
-            if(err) return false;
+        const scanner = new redis_scan(this._client);
+        scanner.hscan('id', '*', (err, data) =>{
+            console.log(err + " *********** : " + data);
+            if(err) {
+                return false}
             else
-                return callback(reply);
+                return callback(data);
         });
     }
 };
