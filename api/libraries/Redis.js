@@ -1,5 +1,4 @@
 var Connector = require('./Connector');
-var redis_scan = require('node-redis-scan');
 
 var Redis = {
     _client: Connector.Redis(),
@@ -10,8 +9,7 @@ var Redis = {
     },
 
     add_set: function (dset,callback){
-        var key = this._key_generator(dset.key);
-        this._client.hmset(key,dset.data,function(err,data){
+        this._client.hset('registros', dset.key, JSON.stringify(dset.data),function(err,data){
             if(err) return callback(err);
             else{
                 return callback(true);
@@ -49,13 +47,24 @@ var Redis = {
     },
 
     get_all: function(callback){
-        const scanner = new redis_scan(this._client);
-        scanner.hscan('id', '*', (err, data) =>{
-            console.log(err + " *********** : " + data);
+        this._client.hvals('registros', function(err, data){
             if(err) {
                 return false}
-            else
-                return callback(data);
+            else{
+                let array = JSON.parse(JSON.stringify(data));
+                console.log(array);
+                console.log('--------------------------')
+                var res = [];
+                for(var i = 0; i < array.length; i++){
+                    console.log(JSON.parse(array[i]))
+                    res.push(JSON.parse(array[i]));
+                }
+                
+                console.log('------------------');
+                console.log(res)
+
+                return callback(res);
+            }
         });
     }
 };

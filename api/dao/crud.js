@@ -4,8 +4,7 @@ var App = {
 
     add_register: function (data, callback) {
         var id = Date.now().toString();
-        var extract = {
-            id: id,
+        let extract = {
             name: data.name,
             location: data.location,
             gender: data.gender,
@@ -14,7 +13,7 @@ var App = {
             way: data.way
         };
 
-        redis.add_set({key: {"id": id}, data: extract}, function (resp) {
+        redis.add_set({key: id, data: extract}, function (resp) {
             if (resp){
                 return callback({err: false, response: "Registro agregado"}, 200);
             }else{
