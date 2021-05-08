@@ -35,11 +35,11 @@ var App = {
     },
 
     get_all: function(callback){
-        redis.get_set({}, null, function(resp){
+        redis.get_all(function(resp){
             if(resp){
                 return callback({err: false, response: "Registros encontrados", data: resp}, 200);
             }else{
-                return callback({err: true, response: "No se ha encontrado el registros", data: null}, 404);
+                return callback({err: true, response: "No se ha encontrado registros", data: null}, 404);
             }
         })
     },
@@ -66,7 +66,7 @@ var App = {
     },
 
     delete_all: function(callback){
-        redis.delete_set({}, function(resp){
+        redis.delete_all(function(resp){
             if (resp){
                 return callback({err: false, response: "Registros eliminados! "}, 200);
             }else{

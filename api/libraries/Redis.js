@@ -37,6 +37,22 @@ var Redis = {
             else
                 return callback(reply);
         });
+    },
+
+    delete_all: function(callback){
+        this._client.flushall(function(err, reply){
+            if(err) return false;
+            else
+                return callback(reply);
+        });
+    },
+
+    get_all: function(callback){
+        this._client.hgetall('*', function(err, reply){
+            if(err) return false;
+            else
+                return callback(reply);
+        });
     }
 };
 
